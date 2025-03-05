@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Bariatric Surgery Assistant - Chat{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        height: calc(100vh - 280px);
+        min-height: 500px;
+    }
+    
+    .chat-message {
+        max-width: 80%;
+    }
+    
+    .chat-bubble {
+        position: relative;
+    } 
+    
+    .user-message .chat-bubble::before {
+        content: "";
+        position: absolute;
+        right: -10px;
+        top: 10px;
+        border-left: 10px solid #4f46e5;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+    }
+    
+    .bot-message .chat-bubble::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 10px;
+        border-right: 10px solid #f3f4f6;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+    }
+    
+    .typing-indicator span {
+        animation: blink 1.4s infinite;
+        animation-fill-mode: both;
+    }
+    
+    .typing-indicator span:nth-child(2) { animation-delay: .2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: .4s; }
+    
+    @keyframes blink {
+        0% { opacity: .2; }
+        20% { opacity: 1; }
+        100% { opacity: .2; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Welcome Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                Welcome to Your Bariatric Surgery Assistant
+            </h1>
+            <p class="text-gray-600 text-lg">
+                I'm here to help you learn about bariatric surgery options, requirements, and procedures.
+            </p>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Chat Messages -->
+            <div class="chat-container flex flex-col">
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                    <!-- Initial bot message -->
+                    <div class="bot-message flex items-start">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-robot text-indigo-600"></i>
+                            </div>
+                        </div>
+                        <div class="chat-message">
+                            <div class="chat-bubble bg-gray-100 rounded-lg p-4 shadow-sm">
+                                <p class="text-gray-800">
+                                    Hello! I'm your bariatric surgery assistant. I can help you with:
+                                </p>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Information about surgery types</li>
+                                    <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Cost and requirements</li>
+                                    <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Pre and post-operative procedures</li>
+                                    <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Diet plans</li>
+                                    <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Eligibility check</li>
+                                    <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Appointment scheduling</li>
+                                </ul>
+                                <p class="mt-2 text-gray-800">
+                                    What would you like to know about?
+                                </p>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1 ml-2">
+                                Bot • Just now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator (hidden by default) -->
+                <div id="typing-indicator" class="bot-message flex items-start p-4 hidden">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                            <i class="fas fa-robot text-indigo-600"></i>
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-bubble bg-gray-100 rounded-lg p-4 shadow-sm">
+                            <div class="typing-indicator flex space-x-1">
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="border-t border-gray-200 p-4 bg-white">
+                    <form id="chat-form" class="flex space-x-4">
+                        <div class="flex-1">
+                            <input type="text" 
+                                   id="user-input" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                   placeholder="Type your message here..."
+                                   required>
+                        </div>
+                        <button type="submit"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                Quick Help
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="sendQuickQuestion('Tell me about bariatric surgery types')"
+                        class="text-left p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-info-circle text-indigo-600 mr-2"></i>
+                    Surgery Types
+                </button>
+                <button onclick="sendQuickQuestion('What are the costs involved?')"
+                        class="text-left p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-dollar-sign text-indigo-600 mr-2"></i>
+                    Cost Information
+                </button>
+                <button onclick="sendQuickQuestion('What are the requirements for surgery?')"
+                        class="text-left p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-clipboard-check text-indigo-600 mr-2"></i>
+                    Requirements
+                </button>
+                <button onclick="sendQuickQuestion('I want to schedule an appointment')"
+                        class="text-left p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-calendar-alt text-indigo-600 mr-2"></i>
+                    Schedule Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const chatMessages = document.getElementById('chat-messages');
+const chatForm = document.getElementById('chat-form');
+const userInput = document.getElementById('user-input');
+const typingIndicator = document.getElementById('typing-indicator');
+
+// Function to add a message to the chat
+function addMessage(message, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = isUser ? 'user-message flex items-start justify-end' : 'bot-message flex items-start';
+    
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    if (isUser) {
+        messageDiv.innerHTML = `
+            <div class="chat-message">
+                <div class="chat-bubble bg-indigo-600 rounded-lg p-4 shadow-sm">
+                    <p class="text-white">${escapeHtml(message)}</p>
+                </div>
+                <div class="text-xs text-gray-500 mt-1 mr-2 text-right">
+                    You • ${timestamp}
+                </div>
+            </div>
+            <div class="flex-shrink-0 ml-4">
+                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-user text-gray-600"></i>
+                </div>
+            </div>
+        `;
+    } else {
+        messageDiv.innerHTML = `
+            <div class="flex-shrink-0 mr-4">
+                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                    <i class="fas fa-robot text-indigo-600"></i>
+                </div>
+            </div>
+            <div class="chat-message">
+                <div class="chat-bubble bg-gray-100 rounded-lg p-4 shadow-sm">
+                    <p class="text-gray-800">${message}</p>
+                </div>
+                <div class="text-xs text-gray-500 mt-1 ml-2">
+                    Bot • ${timestamp}
+                </div>
+            </div>
+        `;
+    }
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to show/hide typing indicator
+function toggleTypingIndicator(show) {
+    typingIndicator.style.display = show ? 'flex' : 'none';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to escape HTML to prevent XSS
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// Function to send a message to the server
+async function sendMessage(message) {
+    try {
+        toggleTypingIndicator(true);
+        
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: message })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        toggleTypingIndicator(false);
+        addMessage(data.message);
+    } catch (error) {
+        console.error('Error:', error);
+        toggleTypingIndicator(false);
+        addMessage('I apologize, but I encountered an error. Please try again or contact support if the problem persists.');
+    }
+}
+
+// Function to handle quick questions
+function sendQuickQuestion(question) {
+    userInput.value = question;
+    chatForm.dispatchEvent(new Event('submit'));
+}
+
+// Handle form submission
+chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const message = userInput.value.trim();
+    if (message) {
+        addMessage(message, true);
+        userInput.value = '';
+        await sendMessage(message);
+    }
+});
+
+// Handle Enter key
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        chatForm.dispatchEvent(new Event('submit'));
+    }
+});
+</script>
+{% endblock %}
