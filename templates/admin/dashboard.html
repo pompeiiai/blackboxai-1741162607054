@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Bariatric Surgery Assistant{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
+<style>
+    .stat-card {
+        transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .activity-timeline::before {
+        content: '';
+        position: absolute; 
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e5e7eb;
+    }
+</style> 
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Welcome Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+            Welcome back, {{ current_user.first_name }}!
+        </h1>
+        <p class="mt-2 text-gray-600">
+            Here's what's happening with your bariatric surgery assistant
+        </p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Users -->
+        <div class="stat-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Users</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ stats.total_users }}</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-users text-blue-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="flex items-center">
+                    <span class="text-green-500 text-sm font-medium">
+                        <i class="fas fa-arrow-up mr-1"></i>12%
+                    </span>
+                    <span class="text-gray-500 text-sm ml-2">vs last month</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Chats -->
+        <div class="stat-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Chats</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ stats.total_chats }}</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-comments text-purple-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="flex items-center">
+                    <span class="text-green-500 text-sm font-medium">
+                        <i class="fas fa-arrow-up mr-1"></i>8%
+                    </span>
+                    <span class="text-gray-500 text-sm ml-2">vs last week</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments -->
+        <div class="stat-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Appointments</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ stats.total_appointments }}</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="flex items-center">
+                    <span class="text-green-500 text-sm font-medium">
+                        <i class="fas fa-arrow-up mr-1"></i>5%
+                    </span>
+                    <span class="text-gray-500 text-sm ml-2">vs last week</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Rate -->
+        <div class="stat-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Conversion Rate</p>
+                    <p class="text-2xl font-bold text-gray-900">15.2%</p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="flex items-center">
+                    <span class="text-red-500 text-sm font-medium">
+                        <i class="fas fa-arrow-down mr-1"></i>2%
+                    </span>
+                    <span class="text-gray-500 text-sm ml-2">vs last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Chat Analytics Chart -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Chat Analytics</h3>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 text-sm bg-gray-100 rounded-md hover:bg-gray-200">
+                        Week
+                    </button>
+                    <button class="px-3 py-1 text-sm bg-indigo-600 text-white rounded-md">
+                        Month
+                    </button>
+                    <button class="px-3 py-1 text-sm bg-gray-100 rounded-md hover:bg-gray-200">
+                        Year
+                    </button>
+                </div>
+            </div>
+            <canvas id="chatAnalytics" height="300"></canvas>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+            <div class="relative activity-timeline pl-8 space-y-6">
+                {% for activity in stats.recent_activities %}
+                <div class="relative">
+                    <div class="absolute -left-8 mt-1.5 w-4 h-4 rounded-full border-2 border-white bg-indigo-500"></div>
+                    <p class="text-sm font-medium text-gray-900">{{ activity.action }}</p>
+                    <p class="text-xs text-gray-500">{{ activity.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions and Recent Users -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="{{ url_for('admin_users') }}" 
+                   class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-user-plus text-2xl text-indigo-600 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Add User</span>
+                </a>
+                <a href="{{ url_for('admin_appointments') }}"
+                   class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-calendar-plus text-2xl text-indigo-600 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">New Appointment</span>
+                </a>
+                <a href="#" 
+                   class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-cog text-2xl text-indigo-600 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Settings</span>
+                </a>
+                <a href="{{ url_for('admin_audit_logs') }}"
+                   class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-history text-2xl text-indigo-600 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">View Logs</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Users -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Recent Users</h3>
+                <a href="{{ url_for('admin_users') }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                    View all
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                User
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Role
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Joined
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for user in recent_users %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                            <i class="fas fa-user text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ user.email }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {% if user.has_role('admin') %}
+                                        bg-purple-100 text-purple-800
+                                    {% elif user.has_role('doctor') %}
+                                        bg-green-100 text-green-800
+                                    {% else %}
+                                        bg-gray-100 text-gray-800
+                                    {% endif %}">
+                                    {{ user.roles[0].name if user.roles else 'User' }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {% if user.is_active %}
+                                        bg-green-100 text-green-800
+                                    {% else %}
+                                        bg-red-100 text-red-800
+                                    {% endif %}">
+                                    {{ 'Active' if user.is_active else 'Inactive' }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ user.created_at.strftime('%Y-%m-%d') }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Chat Analytics Chart
+    const ctx = document.getElementById('chatAnalytics').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Chat Sessions',
+                data: [65, 59, 80, 81],
+                fill: false,
+                borderColor: 'rgb(99, 102, 241)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

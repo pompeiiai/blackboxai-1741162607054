@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Bariatric Surgery Assistant{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-card {
+        transition: all 0.3s ease;
+    }
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Welcome Section -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+            Welcome back, {{ current_user.first_name }}!
+        </h1>
+        <p class="text-gray-600 mt-2">
+            Track your progress and manage your bariatric surgery journey
+        </p>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Quick Chat Card -->
+        <div class="dashboard-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900">Quick Chat</h2>
+                <i class="fas fa-comments text-indigo-600"></i>
+            </div>
+            <p class="text-gray-600 mb-4">Have questions? Start a conversation with your AI assistant.</p>
+            <a href="{{ url_for('index') }}" 
+               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                Start Chat
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="dashboard-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900">Your Profile</h2>
+                <i class="fas fa-user text-indigo-600"></i>
+            </div>
+            <div class="space-y-2">
+                <p class="text-gray-600">
+                    <span class="font-medium">Name:</span> 
+                    {{ current_user.first_name }} {{ current_user.last_name }}
+                </p>
+                <p class="text-gray-600">
+                    <span class="font-medium">Email:</span> 
+                    {{ current_user.email }}
+                </p>
+                <p class="text-gray-600">
+                    <span class="font-medium">Member since:</span> 
+                    {{ current_user.created_at.strftime('%B %d, %Y') }}
+                </p>
+            </div>
+            <div class="mt-4">
+                <a href="{{ url_for('profile') }}" 
+                   class="text-indigo-600 hover:text-indigo-800 font-medium">
+                    Edit Profile <i class="fas fa-chevron-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity Card -->
+        <div class="dashboard-card bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900">Recent Activity</h2>
+                <i class="fas fa-history text-indigo-600"></i>
+            </div>
+            {% set recent_chats = chat_history[:5] %}
+            {% if recent_chats %}
+                <div class="space-y-3">
+                    {% for chat in recent_chats %}
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-gray-600">
+                                <i class="fas fa-comment-dots text-indigo-400 mr-2"></i>
+                                {{ chat.created_at.strftime('%B %d, %Y %H:%M') }}
+                            </div>
+                            <div class="mt-1 text-sm">
+                                <span class="font-medium">Q:</span> 
+                                {{ chat.message[:50] }}{% if chat.message|length > 50 %}...{% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                        View All History <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            {% else %}
+                <p class="text-gray-600">No recent activity</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

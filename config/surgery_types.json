@@ -1,0 +1,152 @@
+{
+  "surgery_types": [
+    {
+      "name": "Gastric Bypass",
+      "description": "Roux-en-Y gastric bypass surgery involves creating a small pouch from the stomach and connecting it directly to the small intestine. This procedure helps you lose weight by limiting food intake and reducing nutrient absorption.",
+      "requirements": [
+        "BMI ≥ 40, or BMI ≥ 35 with obesity-related conditions",
+        "Age 18-65",
+        "Previous failed weight loss attempts",
+        "Psychological evaluation",
+        "Medical clearance",
+        "Commitment to lifestyle changes",
+        "No active substance abuse",
+        "No uncontrolled psychiatric conditions"
+      ],
+      "preop_instructions": {
+        "two_weeks_before": [
+          "Stop smoking",
+          "Stop taking aspirin and blood thinners",
+          "Begin liquid diet as directed",
+          "Complete all required medical tests"
+        ],
+        "day_before": [
+          "No food after midnight",
+          "Clear liquids only",
+          "Shower with antibacterial soap",
+          "Follow medication instructions"
+        ],
+        "morning_of": [
+          "No food or drink",
+          "Take only approved medications",
+          "Arrive at hospital on time",
+          "Bring required documents"
+        ]
+      },
+      "postop_instructions": {
+        "hospital": [
+          "Follow pain management plan",
+          "Begin walking as soon as possible",
+          "Start clear liquids as directed",
+          "Use incentive spirometer"
+        ],
+        "first_week": [
+          "Clear liquids only",
+          "Walk frequently",
+          "Take prescribed medications",
+          "Record fluid intake"
+        ],
+        "weeks_2_4": [
+          "Progress to pureed foods",
+          "Take vitamin supplements",
+          "Attend follow-up appointments",
+          "Continue walking program"
+        ]
+      },
+      "risks": [
+        "Bleeding",
+        "Infection",
+        "Blood clots",
+        "Leaks in surgical connections",
+        "Bowel obstruction",
+        "Dumping syndrome",
+        "Malnutrition",
+        "Vitamin deficiencies"
+      ],
+      "cost_range": {
+        "min": 20000,
+        "max": 25000,
+        "currency": "USD",
+        "notes": "Costs may vary by location and insurance coverage"
+      },
+      "recovery_time": {
+        "hospital_stay": "2-3 days",
+        "return_to_work": "2-4 weeks",
+        "full_recovery": "6-8 weeks"
+      }
+    },
+    {
+      "name": "Sleeve Gastrectomy",
+      "description": "Vertical sleeve gastrectomy is a surgical weight-loss procedure that removes about 80% of the stomach, leaving a tube-shaped stomach about the size and shape of a banana.",
+      "requirements": [
+        "BMI ≥ 40, or BMI ≥ 35 with obesity-related conditions",
+        "Age 18-65",
+        "Documented weight loss attempts",
+        "Psychological evaluation",
+        "Medical clearance",
+        "No significant GERD"
+      ],
+      "preop_instructions": {
+        "two_weeks_before": [
+          "Stop smoking",
+          "Begin prescribed diet",
+          "Complete medical tests",
+          "Plan post-surgery support"
+        ],
+        "day_before": [
+          "Clear liquids only",
+          "No food after midnight",
+          "Prepare hospital bag",
+          "Follow medication instructions"
+        ],
+        "morning_of": [
+          "Nothing by mouth",
+          "Take approved medications only",
+          "Arrive at scheduled time",
+          "Bring required items"
+        ]
+      },
+      "postop_instructions": {
+        "hospital": [
+          "Pain management",
+          "Early mobilization",
+          "Breathing exercises",
+          "Sip water as directed"
+        ],
+        "first_week": [
+          "Clear liquids",
+          "Short walks",
+          "Medication compliance",
+          "Track fluid intake"
+        ],
+        "weeks_2_4": [
+          "Progress to soft foods",
+          "Begin vitamin regimen",
+          "Regular walking",
+          "Follow-up visits"
+        ]
+      },
+      "risks": [
+        "Bleeding",
+        "Infection",
+        "Blood clots",
+        "Leakage",
+        "Stricture",
+        "Acid reflux",
+        "Vitamin deficiencies",
+        "Dehydration"
+      ],
+      "cost_range": {
+        "min": 15000,
+        "max": 20000,
+        "currency": "USD",
+        "notes": "Insurance may cover part of the cost"
+      },
+      "recovery_time": {
+        "hospital_stay": "1-2 days",
+        "return_to_work": "1-3 weeks",
+        "full_recovery": "4-6 weeks"
+      }
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Database
+*.db
+*.sqlite3
+*.sqlite
+
+# Logs
+*.log
+logs/
+log/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Flask
+instance/
+.webassets-cache
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Media files
+media/
+uploads/
+
+# Static files
+static/
+!static/.gitkeep
+
+# Compiled files
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+*.dylib
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Documentation
+docs/_build/
+doc/_build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# Node (if using any JavaScript tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Redis
+*.rdb
+dump.rdb
+
+# Backup files
+*.bak
+*.backup
+*~
+*.swp
+
+# Local development configuration
+config.local.py
+local_settings.py
+
+# Sensitive information
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# Generated files
+generated/
+temp/
+tmp/
+
+# Project specific
+instance/
+migrations/versions/

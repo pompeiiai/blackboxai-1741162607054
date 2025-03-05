@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div id="chat-messages" class="flex flex-col space-y-4 p-4">
+        <!-- Messages will be added here dynamically -->
+    </div>
+    
+    <!-- Typing indicator -->
+    <div id="typing-indicator" class="hidden">
+        <div class="flex items-center space-x-2 p-4">
+            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
+            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
+        </div>
+    </div>
+    
+    <!-- Chat Input Form -->
+    <form id="chat-form" class="border-t border-gray-200 p-4 bg-white">
+        <div class="flex space-x-4">
+            <input type="text" 
+                   id="user-input"
+                   class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                   placeholder="Type your message..."
+                   required>
+            <button type="submit" 
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <i class="fas fa-paper-plane mr-2"></i>Send
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const chatMessages = document.getElementById('chat-messages');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    function appendMessage(message, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`;
+        
+        const timestamp = new Date().toLocaleTimeString();
+        
+        if (isUser) {
+            messageDiv.innerHTML = `
+                <div class="chat-message user-message">
+                    <div class="chat-bubble bg-indigo-600 text-white rounded-lg p-4 shadow-sm">
+                        <p>${escapeHtml(message)}</p>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1 text-right">
+                        You • ${timestamp}
+                    </div>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="chat-message bot-message">
+                    <div class="chat-bubble bg-gray-100 rounded-lg p-4 shadow-sm">
+                        <p>${escapeHtml(message)}</p>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        Bot • ${timestamp}
+                    </div>
+                </div>
+            `;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        typingIndicator.classList.remove('hidden');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+        typingIndicator.classList.add('hidden');
+    }
+
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault(); // Prevent form submission
+        
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        appendMessage(message, true);
+        userInput.value = '';
+
+        // Show typing indicator
+        showTypingIndicator();
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+                credentials: 'same-origin'
+            });
+
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
+            }
+
+            const data = await response.json();
+            
+            // Hide typing indicator
+            hideTypingIndicator();
+
+            if (!response.ok) throw new Error(data.error || 'An error occurred');
+
+            // Add bot's response
+            appendMessage(data.message, false);
+
+        } catch (error) {
+            console.error('Error:', error);
+            hideTypingIndicator();
+            appendMessage('Sorry, an error occurred. Please try again.', false);
+        }
+    });
+});
+</script>
+
+<style>
+.chat-container {
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.chat-message {
+    max-width: 70%;
+}
+
+.chat-bubble {
+    position: relative;
+}
+</style>
+{% endblock %}

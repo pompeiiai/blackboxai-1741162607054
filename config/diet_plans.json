@@ -1,0 +1,132 @@
+{
+  "diet_plans": [
+    {
+      "surgery_type": "Gastric Bypass",
+      "phase": "pre_op",
+      "duration": "2 weeks before surgery",
+      "allowed_foods": [
+        "Clear broths",
+        "Sugar-free gelatin",
+        "Sugar-free beverages",
+        "Protein shakes (approved)",
+        "Water"
+      ],
+      "restricted_foods": [
+        "Solid foods",
+        "Sugary drinks",
+        "Alcoholic beverages",
+        "Caffeine",
+        "Carbonated drinks"
+      ],
+      "guidelines": [
+        "Drink at least 64 oz of water daily",
+        "No calories from regular beverages",
+        "Take prescribed supplements",
+        "Eat slowly and stop when full",
+        "Record all food intake"
+      ],
+      "supplements": {
+        "multivitamin": "As directed",
+        "protein": "60-80g daily",
+        "iron": "If prescribed",
+        "calcium": "1500mg daily"
+      }
+    },
+    {
+      "surgery_type": "Gastric Bypass",
+      "phase": "post_op_phase1",
+      "duration": "Weeks 1-2 after surgery",
+      "allowed_foods": [
+        "Clear broths",
+        "Sugar-free gelatin",
+        "Water",
+        "Sugar-free beverages (non-carbonated)",
+        "Protein water"
+      ],
+      "restricted_foods": [
+        "All solid foods",
+        "Dairy products",
+        "Sugary drinks",
+        "Carbonated beverages",
+        "Caffeine"
+      ],
+      "guidelines": [
+        "Sip fluids slowly",
+        "1-2 ounces per hour",
+        "No straws",
+        "Stop if feeling full",
+        "Track fluid intake"
+      ],
+      "supplements": {
+        "multivitamin": "Start when approved",
+        "protein": "Begin protein supplements",
+        "iron": "As directed",
+        "calcium": "Not in first week"
+      }
+    },
+    {
+      "surgery_type": "Sleeve Gastrectomy",
+      "phase": "pre_op",
+      "duration": "2 weeks before surgery",
+      "allowed_foods": [
+        "Protein shakes",
+        "Sugar-free beverages",
+        "Clear broths",
+        "Sugar-free gelatin",
+        "Water"
+      ],
+      "restricted_foods": [
+        "Solid foods",
+        "Sugary drinks",
+        "Alcoholic beverages",
+        "Caffeine",
+        "High-fat foods"
+      ],
+      "guidelines": [
+        "Minimum 64 oz water daily",
+        "No regular sodas",
+        "Take vitamins as directed",
+        "Record food intake",
+        "Small, frequent sips"
+      ],
+      "supplements": {
+        "multivitamin": "As directed",
+        "protein": "60-80g daily",
+        "calcium": "1500mg daily",
+        "vitamin_d": "3000 IU daily"
+      }
+    },
+    {
+      "surgery_type": "Sleeve Gastrectomy",
+      "phase": "post_op_phase1",
+      "duration": "Weeks 1-2 after surgery",
+      "allowed_foods": [
+        "Clear broths",
+        "Water",
+        "Sugar-free beverages",
+        "Protein water",
+        "Sugar-free gelatin"
+      ],
+      "restricted_foods": [
+        "All solid foods",
+        "Dairy products",
+        "Sugary drinks",
+        "Carbonated beverages",
+        "Caffeine"
+      ],
+      "guidelines": [
+        "Sip slowly",
+        "1-2 ounces per hour",
+        "No straws",
+        "Stop when full",
+        "Track intake"
+      ],
+      "supplements": {
+        "multivitamin": "When approved",
+        "protein": "Start as directed",
+        "calcium": "After week 1",
+        "vitamin_b12": "As prescribed"
+      }
+    }
+  ]
+}
